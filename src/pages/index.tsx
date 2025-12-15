@@ -1,8 +1,11 @@
 import type { NextPage } from 'next';
-import { Example } from '../features/example/';
 
 const Home: NextPage = () => {
-  return <Example />;
+
+
+  
+  return <>oi</>;
+  // return <Example />;
 };
 
 export default Home;
