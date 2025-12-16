@@ -1,12 +1,10 @@
-'use client';
-
 import type { NextPage } from 'next';
-import { useListMoviesReviews } from '../hooks/useListMoviesReviews';
+import { useListMovies } from '../features/listMovies/hooks/useListMovies';
+import { ViewListMovies } from '../features/listMovies/view';
 
 const Home: NextPage = () => {
-  const { data, setQuery, query } = useListMoviesReviews();
 
-  return <>{JSON.stringify(data)}</>;
+  return <ViewListMovies/>;
 };
 
 export default Home;

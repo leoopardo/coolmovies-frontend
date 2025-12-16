@@ -23,7 +23,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     setStore(store);
     setClient(client);
   }, []);
-  if (!store || !client) return <>{'Loading...'}</>;
+  if (!store || !client) return <></>;
   return (
     <>
       <Head>

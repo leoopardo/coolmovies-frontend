@@ -1,22 +1,23 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { CreateStoreOptions } from './types';
-
 import { features } from '../features';
 
-const reducers = Object.fromEntries(
-  Object.entries(features).map(([key, feature]) => [
-    key,
-    (feature).reducer,
-  ])
-);
+type ReducersMap = {
+  [K in keyof typeof features]: (typeof features)[K]['reducer'];
+};
+
+const reducers = Object.keys(features).reduce((acc, key) => {
+  acc[key as keyof ReducersMap] = (features as any)[key].reducer;
+  return acc;
+}, {} as ReducersMap);
 
 const allEpics = Object.values(features).flatMap(
-  (feature) => (feature as any).epics
+  (feature) => feature.epics as any ?? []
 );
 
-const rootEpic = combineEpics<any, any, RootState>(...allEpics as any);
+const rootEpic = combineEpics(...allEpics);
 
 export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
   const epicMiddleware = createEpicMiddleware({
@@ -29,7 +30,7 @@ export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
       getDefaultMiddleware().concat(epicMiddleware),
   });
 
-  epicMiddleware.run(rootEpic as any);
+  epicMiddleware.run(rootEpic);
 
   return store;
 };

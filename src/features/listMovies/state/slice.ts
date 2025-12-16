@@ -11,7 +11,7 @@ export interface Movies {
 }
 
 export interface MoviesState {
-  fetchData?: any[];
+  fetchData?: Movies[];
   total?: number;
   hasNextPage?: boolean;
   after?: string | null;
@@ -53,7 +53,7 @@ export const slice = createSlice({
       state.after = action.payload.after;
     },
     loadError: (state) => {
-      state.fetchData = ['Error Fetching :('];
+      state.fetchData = undefined;
     },
     updateQuery: (
       state,

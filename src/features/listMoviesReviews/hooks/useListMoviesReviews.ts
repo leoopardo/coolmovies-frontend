@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../state/store';
-import { features } from '../features';
+import { useAppDispatch, useAppSelector } from '../../../state/store';
+import { features } from '../../';
 
 export const useListMoviesReviews = () => {
   const dispatch = useAppDispatch();
