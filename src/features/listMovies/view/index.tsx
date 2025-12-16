@@ -2,33 +2,40 @@ import { css } from '@emotion/react';
 import { Grid2, Typography } from '@mui/material';
 import { memo } from 'react';
 import { useListMovies } from '../hooks/useListMovies';
+import { LineAxis } from '@mui/icons-material';
+import Link from 'next/link';
 
 export const ViewListMovies = memo(() => {
   const { data } = useListMovies();
 
   return (
-    <Grid2 container sx={{ width: '100dvw', display: 'flex', justifyContent: "center" }}>
+    <Grid2
+      container
+      sx={{ width: '100dvw', display: 'flex', justifyContent: 'center' }}
+    >
       {data?.map((movie) => (
-        <Grid2
-          key={movie.id}
-          sx={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(18, 18, 18, 1)), url(${movie.imgUrl})`,
-            height: {
-              xs: '50dvh',
-              md: '65dvh',
-            },
-          }}
-          css={styles.posters}
-          size={{
-            xs: 12,
-            sm: 6,
-            md: 3,
-          }}
-        >
-          <Typography variant="h5" textAlign="center">
-            {movie.title}
-          </Typography>
-        </Grid2>
+          <Grid2
+            key={movie.id}
+            sx={{
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(18, 18, 18, 1)), url(${movie.imgUrl})`,
+              height: {
+                xs: '50dvh',
+                md: '65dvh',
+              },
+            }}
+            component="a"
+            href={`/movies/${movie.id}`}
+            css={styles.posters}
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 3,
+            }}
+          >
+            <Typography variant="h5" textAlign="center">
+              {movie.title}
+            </Typography>
+          </Grid2>
       ))}
     </Grid2>
   );
