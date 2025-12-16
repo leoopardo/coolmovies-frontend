@@ -7,7 +7,7 @@ export const ViewListMovies = memo(() => {
   const { data } = useListMovies();
 
   return (
-    <Grid2 container sx={{ width: '100dvw', display: 'flex' }}>
+    <Grid2 container sx={{ width: '100dvw', display: 'flex', justifyContent: "center" }}>
       {data?.map((movie) => (
         <Grid2
           key={movie.id}
