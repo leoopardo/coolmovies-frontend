@@ -13,10 +13,10 @@ const reducers = Object.fromEntries(
 );
 
 const allEpics = Object.values(features).flatMap(
-  (feature) => (feature).epics
+  (feature) => (feature as any).epics
 );
 
-const rootEpic = combineEpics<any, any, RootState>(...allEpics);
+const rootEpic = combineEpics<any, any, RootState>(...allEpics as any);
 
 export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
   const epicMiddleware = createEpicMiddleware({
