@@ -1,11 +1,12 @@
+'use client';
+
 import type { NextPage } from 'next';
+import { useListMoviesReviews } from '../hooks/useListMoviesReviews';
 
 const Home: NextPage = () => {
+  const { data, setQuery, query } = useListMoviesReviews();
 
-
-  
-  return <>oi</>;
-  // return <Example />;
+  return <>{JSON.stringify(data)}</>;
 };
 
 export default Home;

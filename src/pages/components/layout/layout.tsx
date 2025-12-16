@@ -1,14 +1,13 @@
 import { Avatar, css, Grid2, Paper, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import { ReactNode, useEffect } from 'react';
-import { useCurrentUserLazyQuery } from '../../../generated/graphql';
+import { useCurrentUserLazyQuery,  } from '../../../generated/graphql';
 import theme from '../../../styles/theme';
 
 export function Layout({ children }: { children: ReactNode }) {
   const [fetchUser, { data }] = useCurrentUserLazyQuery({
     fetchPolicy: 'network-only',
   });
-  console.log(data);
 
   useEffect(() => {
     fetchUser();
