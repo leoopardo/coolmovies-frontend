@@ -22,7 +22,7 @@ export const fetchMoviesReviewsEpic: Epic<
     filter(actions.fetch.match),
     switchMap(async () => {
       try {
-        const { query } = state$.value.moviesReviews;
+        const { query } = state$.value.listMoviesReviews;
 
         const result = await client.query<
           MoviesReviewsQuery,
@@ -32,7 +32,7 @@ export const fetchMoviesReviewsEpic: Epic<
           variables: {
             first: query.limit,
             after: query.after ?? null,
-            ...query.conditions,
+            ...(query as any).conditions,
           },
           fetchPolicy: 'network-only',
         });
@@ -44,6 +44,7 @@ export const fetchMoviesReviewsEpic: Epic<
           after: result?.data?.allMovieReviews?.pageInfo?.endCursor,
         });
       } catch (err) {
+        console.error('🔥 MoviesReviews error:', err);
         return actions.loadError();
       }
     })

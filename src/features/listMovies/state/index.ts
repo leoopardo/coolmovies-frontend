@@ -1,8 +1,8 @@
 import reducer, { actions } from './slice';
-import { fetchMoviesReviewsEpic } from './epics';
+import { fetchMoviesEpic } from './epics';
 
 export const epics = [
-  fetchMoviesReviewsEpic,
+  fetchMoviesEpic,
 ];
 
 export { reducer, actions };

@@ -1,0 +1,23 @@
+query Movies(
+  $first: Int!
+  $after: Cursor
+) {
+  allMovies(
+    first: $first
+    after: $after
+  ) {
+    totalCount
+    nodes {
+      id
+      title
+      movieDirectorId
+      userCreatorId
+      releaseDate
+      imgUrl
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

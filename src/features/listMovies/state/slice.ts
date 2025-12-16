@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface MoviesReviews {
-  __typename?: 'MoviesReviews';
+export interface Movies {
+  __typename?: 'Movies';
   id: string | null;
   title: string | null;
-  body: string | null;
-  rating: number | null;
-  movieId: string | null;
-  userReviewerId: string | null;
+  movieDirectorId: string | null;
+  userCreatorId: number | null;
+  releaseDate: string | null;
+  imgUrl: string | null;
 }
 
-export interface MoviesReviewsState {
+export interface MoviesState {
   fetchData?: any[];
   total?: number;
   hasNextPage?: boolean;
@@ -18,14 +18,10 @@ export interface MoviesReviewsState {
   query: {
     limit: number;
     after?: string | null;
-    conditions?: {
-      movieId?: string;
-      userReviewerId?: string;
-    };
   };
 }
 
-const initialState: MoviesReviewsState = {
+const initialState: MoviesState = {
   query: {
     limit: 10,
   },
@@ -33,7 +29,7 @@ const initialState: MoviesReviewsState = {
 
 export const slice = createSlice({
   initialState,
-  name: 'listMoviesReviews',
+  name: 'movies',
   reducers: {
     fetch: () => {},
     clearData: (state) => {
@@ -45,7 +41,7 @@ export const slice = createSlice({
     loaded: (
       state,
       action: PayloadAction<{
-        data: MoviesReviews[];
+        data: Movies[];
         total?: number;
         hasNextPage?: boolean;
         after?: string | null;
@@ -63,10 +59,6 @@ export const slice = createSlice({
       state,
       action: PayloadAction<{
         limit?: number;
-        conditions?: {
-          movieId?: string;
-          userReviewerId?: string;
-        };
       }>
     ) => {
       state.query = {

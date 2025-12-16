@@ -3,32 +3,35 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { CreateStoreOptions } from './types';
 
-import { exampleEpics, exampleReducer } from '../features/example/state';
-import moviesReviewsReducer from '../features/listMoviesReviews/state/slice';
-import { listMoviesReviewsEpics } from '../features/listMoviesReviews/state';
+import { features } from '../features';
 
-const rootEpic = combineEpics<any, any, RootState>(
-  exampleEpics,
-  ...listMoviesReviewsEpics
+const reducers = Object.fromEntries(
+  Object.entries(features).map(([key, feature]) => [
+    key,
+    (feature).reducer,
+  ])
 );
+
+const allEpics = Object.values(features).flatMap(
+  (feature) => (feature).epics
+);
+
+const rootEpic = combineEpics<any, any, RootState>(...allEpics);
 
 export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
   const epicMiddleware = createEpicMiddleware({
     dependencies: epicDependencies,
   });
 
-  const createdStore = configureStore({
+  const store = configureStore({
+    reducer: reducers,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(epicMiddleware),
-    reducer: {
-      example: exampleReducer,
-      moviesReviews: moviesReviewsReducer,
-    },
   });
 
   epicMiddleware.run(rootEpic as any);
 
-  return createdStore;
+  return store;
 };
 
 export type RootState = ReturnType<ReturnType<typeof createStore>['getState']>;

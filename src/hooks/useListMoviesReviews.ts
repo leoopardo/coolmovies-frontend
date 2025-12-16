@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../state/store';
-import { actions } from '../features/listMoviesReviews/state/slice';
+import { features } from '../features';
 
 export const useListMoviesReviews = () => {
   const dispatch = useAppDispatch();
@@ -10,10 +10,10 @@ export const useListMoviesReviews = () => {
     total,
     hasNextPage,
     query,
-  } = useAppSelector((state) => state.moviesReviews);
+  } = useAppSelector((state) => state.listMoviesReviews);
 
   useEffect(() => {
-    dispatch(actions.fetch());
+    dispatch(features.listMoviesReviews.actions.fetch());
   }, [dispatch, query]);
 
   return {
@@ -22,10 +22,10 @@ export const useListMoviesReviews = () => {
     hasNextPage,
     query,
     setQuery: (newQuery: Partial<typeof query>) =>
-      dispatch(actions.updateQuery(newQuery)),
+      dispatch(features.listMoviesReviews.actions.updateQuery(newQuery)),
     loadMore: () =>
       dispatch(
-        actions.updateQuery({
+        features.listMoviesReviews.actions.updateQuery({
           limit: query.limit + 10,
         })
       ),
