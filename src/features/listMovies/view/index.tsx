@@ -77,7 +77,7 @@ export const ViewListMovies = memo(() => {
       <Grid2 container spacing={4}>
         {data?.map((movie) => {
           const movieReviews = reviews?.filter(
-            (r) => r.movieId === String(movie.id)
+            (review) => review.movieId === String(movie.id)
           );
           const movieReviewsTotal =
             (movieReviews?.reduce((acc, curr) => {
