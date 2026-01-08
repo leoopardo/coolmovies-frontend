@@ -1,27 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, Reducer } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { CreateStoreOptions } from './types';
-import { exampleEpics, exampleReducer } from '../features/example/state';
+import { features } from '../features';
 
-const rootEpic = combineEpics<any, any, RootState>(exampleEpics);
+type ReducersMap = {
+  [K in keyof typeof features]: (typeof features)[K]['reducer'];
+};
+
+const reducers = Object.keys(features).reduce((acc, key) => {
+  acc[key as keyof ReducersMap] = (features as any)[key].reducer;
+  return acc;
+}, {} as ReducersMap);
+
+const allEpics = Object.values(features).flatMap(
+  (feature) => feature.epics as any ?? []
+);
+
+const rootEpic = combineEpics(...allEpics);
 
 export const createStore = ({ epicDependencies }: CreateStoreOptions) => {
   const epicMiddleware = createEpicMiddleware({
     dependencies: epicDependencies,
   });
 
-  const createdStore = configureStore({
+  const store = configureStore({
+    reducer: reducers,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(epicMiddleware),
-    reducer: {
-      example: exampleReducer,
-    },
   });
 
-  epicMiddleware.run(rootEpic as any);
+  epicMiddleware.run(rootEpic);
 
-  return createdStore;
+  return store;
 };
 
 export type RootState = ReturnType<ReturnType<typeof createStore>['getState']>;

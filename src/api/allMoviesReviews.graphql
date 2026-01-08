@@ -1,0 +1,29 @@
+query MoviesReviews(
+  $first: Int!
+  $after: Cursor
+  $movieId: UUID
+  $userReviewerId: UUID
+) {
+  allMovieReviews(
+    first: $first
+    after: $after
+    condition: {
+      movieId: $movieId
+      userReviewerId: $userReviewerId
+    }
+  ) {
+    totalCount
+    nodes {
+      id
+      title
+      body
+      rating
+      movieId
+      userReviewerId
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
